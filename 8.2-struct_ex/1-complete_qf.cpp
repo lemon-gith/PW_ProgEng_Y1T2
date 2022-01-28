@@ -48,7 +48,7 @@ int main(){
     sol.x << " - " << sol.y << "j, " << std::endl;
   }
   else if (repeat){
-    std::cout << "The solutions is: " << std::endl <<
+    std::cout << "The solution is: " << std::endl <<
     rep_sol << std::endl;
   }
   else{
