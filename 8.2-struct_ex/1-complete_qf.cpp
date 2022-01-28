@@ -1,6 +1,5 @@
 #include <iostream>
 #include <cmath>
-#include <string>
 
 struct Complex{
   double x, y;
@@ -22,6 +21,7 @@ double i_sol_comp(double disc, double a){
 
 int main(){
   double a, b, c;
+  double rep_sol, x, y;
   std::cout << "Please enter the x-coefficients here: " << std::endl;
   std::cin >> a >> b >> c;
 
@@ -31,15 +31,15 @@ int main(){
   if (d < 0){
     complx = true;
     sol.x = r_sol_comp(a, b);
-    sol.y = i_sol_comp(d, a);
+    sol.y = abs(i_sol_comp(d, a)); //as complex conjugate is implied, too
   }
   else if (d == 0){
     repeat = true;
-    double rep_sol = r_sol_comp(a, b);
+    rep_sol = r_sol_comp(a, b);
   }
   else{
-    double x = r_sol_comp(a, b);
-    double y = i_sol_comp(d, a); 
+    x = r_sol_comp(a, b);
+    y = i_sol_comp(d, a);
   }
 
   if (complx){
@@ -52,7 +52,7 @@ int main(){
     rep_sol << std::endl;
   }
   else{
-      std::cout << "The solutions are: " << std::endl <<
-      x + y << " and " << x - y << std::endl;
+    std::cout << "The solutions are: " << std::endl <<
+    x + y << " and " << x - y << std::endl;
   }
 }
