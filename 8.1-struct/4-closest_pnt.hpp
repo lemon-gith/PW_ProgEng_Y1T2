@@ -43,7 +43,7 @@ void closest_points(const std::vector<Point>& vp, int& idxp1, int& idxp2){
     }
   }
 }
- 
+/*
 int main(){
   std::ifstream infile;
   infile.open("8.1-struct/points.txt");
@@ -76,4 +76,4 @@ int main(){
     std::cout << "The two closest points are: " << std::endl;
     std::cout << point_to_s(points[idxp1]) << " & " << point_to_s(points[idxp2]) << " :)" << std::endl;
   }
-}
+}*/
