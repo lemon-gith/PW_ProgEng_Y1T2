@@ -28,8 +28,8 @@ int main(){
         return EXIT_FAILURE;
     }
  
-    std::vector<Point> points;
-    Point tmp;
+    std::vector <Point> points;
+    Point tmp{};
  
     while(infile >> tmp.x >> tmp.y){
         points.push_back(tmp);
@@ -38,7 +38,6 @@ int main(){
     infile.close();
  
     for (int i = 0; i < points.size(); i++){
-      std::cout << point_to_s(points[i]) <<std::endl; 
+      std::cout << point_to_s(points[i]) << std::endl;
     }
-     
 }
