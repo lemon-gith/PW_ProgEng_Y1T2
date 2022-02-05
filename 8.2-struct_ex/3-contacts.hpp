@@ -59,7 +59,7 @@ int main(){
     std::cout << "Apologies, but I couldn't find the person requested in the database." << std::endl;
   }
   else{
-    std::cout << fnm << " " << snm << "の email address and phone number are: " << std::endl
+    std::cout << fnm << " " << snm << " の email address and phone number are: " << std::endl
     << contacts[contact_index].e_add << " & " << contacts[contact_index].p_num << std::endl;
   }
 }
