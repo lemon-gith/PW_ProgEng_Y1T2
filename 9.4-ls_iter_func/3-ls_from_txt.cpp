@@ -1,14 +1,11 @@
 #include <iostream>
+#include <fstream>
 
 typedef int list_t;
 
-// using typedef we can change the type only in one line
-// if we want a linked list implementation 
-// that works for a different type
-
 struct ListNode{
-  list_t val;
-  ListNode* next;
+  list_t val{};
+  ListNode* next{};
 };
 
 ListNode* cons_list(list_t e, ListNode* l){
@@ -23,7 +20,7 @@ ListNode* cons_list(list_t e, ListNode* l){
 }
 
 void print_list(ListNode* l){
-  while(l != NULL){
+  while(l != nullptr){
     std::cout << l->val << std::endl;
     l = l->next;
   }
@@ -32,7 +29,7 @@ void print_list(ListNode* l){
 void deallocate_list(ListNode* l){
   ListNode* tmp;
 
-  while(l != NULL){
+  while(l != nullptr){
     tmp = l->next;
     delete l;
     l = tmp;
@@ -40,10 +37,23 @@ void deallocate_list(ListNode* l){
 }
 
 int main(){
-  ListNode* l = NULL;
+  ListNode* l = nullptr;
 
-  l = cons_list(2, l);
-  l = cons_list(3, l);
+  std::ifstream infile;
+  infile.open("9.4-ls_iter_func/list.txt");
+
+  if (!infile.is_open()){
+    std::cout << "error opening file" << std::endl;
+    return EXIT_FAILURE;
+  }
+
+  list_t in_val;
+
+  while (infile >> in_val){
+    l = cons_list(in_val, l);
+  }
+
+  infile.close();
 
   print_list(l);
 
