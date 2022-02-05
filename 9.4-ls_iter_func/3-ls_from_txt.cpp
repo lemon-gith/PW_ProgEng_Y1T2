@@ -36,24 +36,34 @@ void deallocate_list(ListNode* l){
   }
 }
 
-int main(){
-  ListNode* l = nullptr;
-
+ListNode* ls_from_txt(ListNode* ptr, const std::string& txt_name){
   std::ifstream infile;
-  infile.open("9.4-ls_iter_func/list.txt");
+  infile.open(txt_name);
 
   if (!infile.is_open()){
     std::cout << "error opening file" << std::endl;
-    return EXIT_FAILURE;
+    return nullptr;
   }
 
   list_t in_val;
 
   while (infile >> in_val){
-    l = cons_list(in_val, l);
+    ptr = cons_list(in_val, ptr);
   }
 
   infile.close();
+
+  return ptr;
+}
+
+int main(){
+  ListNode* l = nullptr;
+  l = ls_from_txt(l, "9.4-ls_iter_func/int_list.txt");
+
+  if (l == nullptr){
+    std::cout << "Sorry, either the file was empty, or there was an issue opening it";
+    return EXIT_FAILURE;
+  }
 
   print_list(l);
 
