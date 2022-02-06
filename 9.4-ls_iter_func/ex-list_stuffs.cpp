@@ -89,6 +89,10 @@ bool search_list(list_t given_val, ListNode* ptr){ //ex: Search in a list
   return val_match;
 }
 
+ListNode* reversed_copy_list(ListNode* ptr){
+  s
+}
+
 /*bool search_ordered_list(list_t e, ListNode* l){//ex: Search in an ordered list
   bool val_match = false;
 
@@ -97,11 +101,38 @@ bool search_list(list_t given_val, ListNode* ptr){ //ex: Search in a list
   //return val_match;
 }*/
 
-bool replace_list(list_t e, list_t n, ListNode* l, bool all){
-  bool comp_replace = false;
+bool replace_list(const list_t e, const list_t n, ListNode* ptr, bool all = true){ //ex: Replace elements in a list
+  bool comp_replace = false; //completed replacement
+  int counter = 0; // to count num of replacements
+  ListNode* rd_ls;
+  rd_ls = ptr;
 
+  while (rd_ls != nullptr){
+    if ((*rd_ls).val == e){
+      (*rd_ls).val = n;
+      comp_replace = true;
+      if (!all){
+        rd_ls = nullptr;
+        counter++;
+      }
+      else{
+        rd_ls = (*rd_ls).next;
+        counter++;
+      }
+    }
+    else{
+      rd_ls = (*rd_ls).next;
+    }
+  }
 
-  //return comp_replace;
+  if (counter == 1){
+    std::cout << "1 instance was replaced" << std::endl;
+  }
+  else {
+    std::cout << counter << " instances were replaced" << std::endl;
+  }
+
+  return comp_replace;
 }
 
 
@@ -110,7 +141,7 @@ int main(){
   ListNode* ls_ptr = nullptr;
 
   //reading list from the txt file
-  ls_ptr = ls_from_txt(ls_ptr, "int_list.txt");
+  ls_ptr = ls_from_txt(ls_ptr, "9.4-ls_iter_func/int_list2.txt");
   if (ls_ptr == nullptr){
     std::cout << "Sorry, either the file was empty, or there was an issue opening it";
     return EXIT_FAILURE;
@@ -126,7 +157,14 @@ int main(){
     std::cout << give_val << " is not in the list" << std::endl;
   }*/ //ex: Search in a list/ex: Search in an ordered list
 
-
+  /*if (replace_list(2, 17, ls_ptr)){
+    print_list(ls_ptr);
+    std::cout << "all 2 --> 17" << std::endl;
+  }
+  else{
+    print_list(ls_ptr);
+    std::cout << "in the else condition" << std::endl;
+  }*/ //ex: Replace elements in a list
 
   deallocate_list(ls_ptr);
 }
