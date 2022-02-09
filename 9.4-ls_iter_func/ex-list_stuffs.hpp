@@ -89,17 +89,37 @@ bool search_list(list_t given_val, ListNode* ptr){ //ex: Search in a list
   return val_match;
 }
 
-ListNode* reversed_copy_list(ListNode* ptr){
-  s
+ListNode* reversed_copy_list(ListNode* ptr){ //ex: Reversed copy of a list
+  ListNode* n_ls;
+  ListNode* rd_ls; //read list
+  n_ls = nullptr;
+  rd_ls = ptr;
+
+  while (rd_ls != nullptr){
+    n_ls = cons_list((*rd_ls).val, n_ls);
+    rd_ls = (*rd_ls).next;
+  }
+
+  return n_ls;
 }
 
-/*bool search_ordered_list(list_t e, ListNode* l){//ex: Search in an ordered list
+bool search_ordered_list(list_t e, ListNode* ptr){//ex: Search in an ordered list
   bool val_match = false;
 
-  TO FINISH AFTER REVERSE LIST CODE COS I'M TOO LAZY TO CHANGE THE TXT FILES
+  ListNode* rd_ls;
+  rd_ls = ptr;
 
-  //return val_match;
-}*/
+  while (rd_ls != nullptr && !val_match && (((*rd_ls).val) <= e + 1)){
+    if ((*rd_ls).val == e){
+      val_match = true;
+    }
+    else{
+      rd_ls = (*rd_ls).next;
+    }
+  }
+
+  return val_match;
+}
 
 bool replace_list(const list_t e, const list_t n, ListNode* ptr, bool all = true){ //ex: Replace elements in a list
   bool comp_replace = false; //completed replacement
@@ -141,7 +161,7 @@ int main(){
   ListNode* ls_ptr = nullptr;
 
   //reading list from the txt file
-  ls_ptr = ls_from_txt(ls_ptr, "9.4-ls_iter_func/int_list2.txt");
+  ls_ptr = ls_from_txt(ls_ptr, "9.4-ls_iter_func/int_list.txt");
   if (ls_ptr == nullptr){
     std::cout << "Sorry, either the file was empty, or there was an issue opening it";
     return EXIT_FAILURE;
@@ -149,7 +169,8 @@ int main(){
 
   //std::cout << "That list has a length of " << len_list(ls_ptr) << std::endl; //ex: Length of a list
 
-  /*int give_val = 6;
+  /*int give_val = 7;
+  ls_ptr = reversed_copy_list(ls_ptr);
   if (search_ordered_list(give_val, ls_ptr)){
     std::cout << give_val << " is in the list" << std::endl;
   }
@@ -165,6 +186,9 @@ int main(){
     print_list(ls_ptr);
     std::cout << "in the else condition" << std::endl;
   }*/ //ex: Replace elements in a list
+
+  /*print_list(ls_ptr);
+  print_list(reversed_copy_list(ls_ptr));*/ //ex: Reversed copy of a list
 
   deallocate_list(ls_ptr);
 }
