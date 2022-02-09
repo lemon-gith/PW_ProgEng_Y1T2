@@ -156,7 +156,6 @@ bool replace_list(const list_t e, const list_t n, ListNode* ptr, bool all = true
 }
 
 
-//maybe also try a list order-er code
 int main(){
   ListNode* ls_ptr = nullptr;
 
