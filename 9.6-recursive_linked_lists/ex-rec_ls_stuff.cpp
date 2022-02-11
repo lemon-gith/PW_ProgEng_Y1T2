@@ -104,7 +104,7 @@ list_t extreme_val(ListNode* ptr, bool minimum = true){
 //cuts the first instance of value, val, from the list referenced by ptr
 void crispr_cut(list_t value, ListNode* &ptr){
   ListNode* rd_ls;
-  ListNode* rd_shadow{};
+  ListNode* rd_shadow = nullptr;
   rd_ls = ptr;
 
   while ((*rd_ls).val != value){
@@ -112,6 +112,26 @@ void crispr_cut(list_t value, ListNode* &ptr){
     rd_ls = (*rd_ls).next;
   }
   (*rd_shadow).next = (*rd_ls).next;
+}
+
+void crispr_cut_1(list_t value, ListNode* &ptr){
+  ListNode* rd_ls;
+  rd_ls = ptr;
+  ListNode* tmp = rd_ls; // address of prev ListNode
+
+  while ((rd_ls) != nullptr){
+    if(rd_ls->val == value){
+      if(rd_ls->next == nullptr){
+        tmp->next = nullptr;
+        break;
+      }
+
+      tmp->next = rd_ls->next; // memory leak here
+      break;
+    }
+    tmp = rd_ls;
+    rd_ls = (*rd_ls).next;
+  }
 }
 
 ListNode* order_ls(ListNode* ptr, bool ascend = true){ //ex: ordered copy of a list
@@ -124,7 +144,7 @@ ListNode* order_ls(ListNode* ptr, bool ascend = true){ //ex: ordered copy of a l
   if (ascend){
     while(rd_ls != nullptr) {
       min_max = extreme_val(rd_ls, false);
-      crispr_cut(min_max, rd_ls);
+      crispr_cut_1(min_max, rd_ls);
       n_ls = cons_list(min_max, n_ls);
       rd_ls = (*rd_ls).next;
     }
@@ -133,7 +153,7 @@ ListNode* order_ls(ListNode* ptr, bool ascend = true){ //ex: ordered copy of a l
   else{
     while(rd_ls != nullptr) {
       min_max = extreme_val(rd_ls);
-      crispr_cut(min_max, rd_ls);
+      crispr_cut_1(min_max, rd_ls);
       n_ls = cons_list(min_max, n_ls);
       rd_ls = (*rd_ls).next;
     }
@@ -149,6 +169,11 @@ int main(){
     std::cout << "Sorry, either the file was empty, or there was an issue opening it";
     return EXIT_FAILURE;
   }
+  print_list_rec(ls_ptr);
+  // int min_max = extreme_val(ls_ptr, true);
+  std::cout << "cut: "<< std::endl ;
+  crispr_cut_1(55, ls_ptr);
+  print_list_rec(ls_ptr);
 
   //std::cout << length_list_rec(ls_ptr) << std::endl; //ex: list length
 
@@ -163,7 +188,7 @@ int main(){
 
   ls_ptr = order_ls(ls_ptr, true);
 
-  print_list_rec(ls_ptr);
+  // print_list_rec(ls_ptr);
 
   deallocate_list_rec(ls_ptr);
 }
