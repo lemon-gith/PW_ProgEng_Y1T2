@@ -76,13 +76,26 @@ ListNode* ordered_insertion_list(list_t e, ListNode* l){ //ex: ordered insertion
   }
 }
 
+ListNode* simpler_order_ls(ListNode* ptr){
+  ListNode* rd_ls = ptr;
+  ListNode* n_ls = nullptr;
+
+  while (rd_ls != nullptr) {
+    n_ls = ordered_insertion_list((*rd_ls).val, n_ls);
+    rd_ls = (*rd_ls).next;
+  }
+
+  delete ptr;
+  return n_ls;
+}
+
+
 //functions defined for use in order_ls():
 
 //returns the lowest/highest value in the list
 list_t extreme_val(ListNode* ptr, bool minimum = true){
-  ListNode* rd_ls;
+  ListNode* rd_ls = ptr;
   list_t ex_val = (*ptr).val; //current extremum value, either minimum or maximum
-  rd_ls = (*ptr).next;
 
   while(rd_ls != nullptr) {
     if (minimum) {
@@ -98,14 +111,14 @@ list_t extreme_val(ListNode* ptr, bool minimum = true){
       rd_ls = (*rd_ls).next;
     }
   }
+
   return ex_val;
 }
 
 //cuts the first instance of value, val, from the list referenced by ptr
 void crispr_cut(list_t value, ListNode* &ptr){
-  ListNode* rd_ls;
+  ListNode* rd_ls = ptr;
   ListNode* rd_shadow = nullptr;
-  rd_ls = ptr;
 
   while ((*rd_ls).val != value){
     rd_shadow = rd_ls;
@@ -115,20 +128,19 @@ void crispr_cut(list_t value, ListNode* &ptr){
 }
 
 void crispr_cut_1(list_t value, ListNode* &ptr){
-  ListNode* rd_ls;
-  rd_ls = ptr;
+  ListNode* rd_ls = ptr;
   ListNode* tmp = rd_ls; // address of prev ListNode
 
   while ((rd_ls) != nullptr){
     if(rd_ls->val == value){
       if(rd_ls->next == nullptr){
         tmp->next = nullptr;
-        break;
+        return;
       }
-
       tmp->next = rd_ls->next; // memory leak here
-      break;
+      return;
     }
+
     tmp = rd_ls;
     rd_ls = (*rd_ls).next;
   }
@@ -140,26 +152,60 @@ ListNode* order_ls(ListNode* ptr, bool ascend = true){ //ex: ordered copy of a l
   n_ls = nullptr;
   rd_ls = ptr;
   list_t min_max;
+  int ls_len = length_list_rec(ptr);
 
   if (ascend){
-    while(rd_ls != nullptr) {
+    for (int i = 0; i < ls_len; i++){
+      std::cout << "on loop: " << i << std::endl;
+      std::cout << "print before (rd_ls): " << std::endl;
+      print_list_rec(rd_ls);
+      std::cout << "-----" << std::endl;
+      std::cout << "print before (n_ls): " << std::endl;
+      print_list_rec(n_ls);
+      std::cout << std::endl << "-------------" << std::endl << std::endl;
+
       min_max = extreme_val(rd_ls, false);
+
+      std::cout << "min_max: " << min_max << std::endl;
+      std::cout << "print after extreme_val, (rd_ls): " << std::endl;
+      print_list_rec(rd_ls);
+      std::cout << "-----" << std::endl;
+      std::cout << "print after extreme_val, (n_ls): " << std::endl;
+      print_list_rec(n_ls);
+      std::cout << std::endl << "-------------" << std::endl << std::endl;
+
       crispr_cut_1(min_max, rd_ls);
+
+      std::cout << "print after crispr, (rd_ls): " << std::endl;
+      print_list_rec(rd_ls);
+      std::cout << "-----" << std::endl;
+      std::cout << "print after crispr, (n_ls): " << std::endl;
+      print_list_rec(n_ls);
+      std::cout << std::endl << "-------------" << std::endl << std::endl;
+
       n_ls = cons_list(min_max, n_ls);
-      rd_ls = (*rd_ls).next;
+
+      std::cout << "print after cons_list, (rd_ls): " << std::endl;
+      print_list_rec(rd_ls);
+      std::cout << "-----" << std::endl;
+      std::cout << "print after cons_list, (n_ls): " << std::endl;
+      print_list_rec(n_ls);
+      std::cout << std::endl << "-------------" << "\n\n\n\n\n";
     }
+    std::cout << "quit for loop" << std::endl;
+    print_list_rec(n_ls);
     return n_ls;
   }
   else{
-    while(rd_ls != nullptr) {
+    for (int i = 0; i < ls_len; i++){
       min_max = extreme_val(rd_ls);
       crispr_cut_1(min_max, rd_ls);
       n_ls = cons_list(min_max, n_ls);
-      rd_ls = (*rd_ls).next;
     }
     return n_ls;
   }
 }
+
 
 int main(){
   ListNode* ls_ptr = nullptr;
@@ -169,11 +215,6 @@ int main(){
     std::cout << "Sorry, either the file was empty, or there was an issue opening it";
     return EXIT_FAILURE;
   }
-  print_list_rec(ls_ptr);
-  // int min_max = extreme_val(ls_ptr, true);
-  std::cout << "cut: "<< std::endl ;
-  crispr_cut_1(55, ls_ptr);
-  print_list_rec(ls_ptr);
 
   //std::cout << length_list_rec(ls_ptr) << std::endl; //ex: list length
 
@@ -186,9 +227,11 @@ int main(){
 
   //ordered_insertion_list(44, ls_ptr); //ex: ordered insertion
 
+  //ls_ptr = simpler_order_ls(ls_ptr);
+
   ls_ptr = order_ls(ls_ptr, true);
 
-  // print_list_rec(ls_ptr);
+  //print_list_rec(ls_ptr);
 
   deallocate_list_rec(ls_ptr);
 }
