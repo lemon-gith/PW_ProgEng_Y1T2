@@ -63,14 +63,14 @@ bool search_ordered_list_rec(list_t e, ListNode* l){ //ex: search in an ordered 
   }
 }
 
-ListNode* ordered_insertion_list(list_t e, ListNode* l, bool ascend = true){ //ex: ordered insertion in a list, requires ascending list
+ListNode* ordered_insertion_list(list_t e, ListNode* l, bool descend = true){ //ex: ordered insertion in a list, requires ascending list
   if(l == NULL){
     return cons_list(e, l);
   }
-  else if(e > l->val && ascend){
+  else if(e < l->val && descend){
     return cons_list(e, l);
   }
-  else if(e < l->val && not ascend){
+  else if(e > l->val && !descend){
     return cons_list(e, l);
   }
   else{
@@ -84,7 +84,7 @@ ListNode* simpler_order_ls(ListNode* ptr, bool ascend = true){
   ListNode* n_ls = nullptr;
 
   while (rd_ls != nullptr) {
-    n_ls = ordered_insertion_list((*rd_ls).val, n_ls, ascend);
+    n_ls = ordered_insertion_list((*rd_ls).val, n_ls, !ascend);
     rd_ls = (*rd_ls).next;
   }
 
@@ -190,9 +190,9 @@ int main(){
 
   //ordered_insertion_list(44, ls_ptr); //ex: ordered insertion
 
-  //ls_ptr = simpler_order_ls(ls_ptr);
+  ls_ptr = simpler_order_ls(ls_ptr, true);
 
-  ls_ptr = order_ls(ls_ptr, true);
+  //ls_ptr = order_ls(ls_ptr, true);
 
   print_list_rec(ls_ptr);
 
