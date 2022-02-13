@@ -63,11 +63,14 @@ bool search_ordered_list_rec(list_t e, ListNode* l){ //ex: search in an ordered 
   }
 }
 
-ListNode* ordered_insertion_list(list_t e, ListNode* l){ //ex: ordered insertion in a list, requires ascending list
+ListNode* ordered_insertion_list(list_t e, ListNode* l, bool ascend = true){ //ex: ordered insertion in a list, requires ascending list
   if(l == NULL){
     return cons_list(e, l);
   }
-  else if(e < l->val){
+  else if(e > l->val && ascend){
+    return cons_list(e, l);
+  }
+  else if(e < l->val && not ascend){
     return cons_list(e, l);
   }
   else{
@@ -76,12 +79,12 @@ ListNode* ordered_insertion_list(list_t e, ListNode* l){ //ex: ordered insertion
   }
 }
 
-ListNode* simpler_order_ls(ListNode* ptr){
+ListNode* simpler_order_ls(ListNode* ptr, bool ascend = true){
   ListNode* rd_ls = ptr;
   ListNode* n_ls = nullptr;
 
   while (rd_ls != nullptr) {
-    n_ls = ordered_insertion_list((*rd_ls).val, n_ls);
+    n_ls = ordered_insertion_list((*rd_ls).val, n_ls, ascend);
     rd_ls = (*rd_ls).next;
   }
 
@@ -116,20 +119,14 @@ list_t extreme_val(ListNode* ptr, bool minimum = true){
 }
 
 //cuts the first instance of value, val, from the list referenced by ptr
-void crispr_cut(list_t value, ListNode* &ptr){
-  ListNode* rd_ls = ptr;
-  ListNode* rd_shadow = nullptr;
-
-  while ((*rd_ls).val != value){
-    rd_shadow = rd_ls;
-    rd_ls = (*rd_ls).next;
-  }
-  (*rd_shadow).next = (*rd_ls).next;
-}
-
-void crispr_cut_1(list_t value, ListNode* &ptr){
+void crispr(list_t value, ListNode* &ptr){
   ListNode* rd_ls = ptr;
   ListNode* tmp = rd_ls; // address of prev ListNode
+
+  if(rd_ls->val == value){
+    ptr = rd_ls->next;
+    return;
+  }
 
   while ((rd_ls) != nullptr){
     if(rd_ls->val == value){
@@ -156,50 +153,16 @@ ListNode* order_ls(ListNode* ptr, bool ascend = true){ //ex: ordered copy of a l
 
   if (ascend){
     for (int i = 0; i < ls_len; i++){
-      std::cout << "on loop: " << i << std::endl;
-      std::cout << "print before (rd_ls): " << std::endl;
-      print_list_rec(rd_ls);
-      std::cout << "-----" << std::endl;
-      std::cout << "print before (n_ls): " << std::endl;
-      print_list_rec(n_ls);
-      std::cout << std::endl << "-------------" << std::endl << std::endl;
-
       min_max = extreme_val(rd_ls, false);
-
-      std::cout << "min_max: " << min_max << std::endl;
-      std::cout << "print after extreme_val, (rd_ls): " << std::endl;
-      print_list_rec(rd_ls);
-      std::cout << "-----" << std::endl;
-      std::cout << "print after extreme_val, (n_ls): " << std::endl;
-      print_list_rec(n_ls);
-      std::cout << std::endl << "-------------" << std::endl << std::endl;
-
-      crispr_cut_1(min_max, rd_ls);
-
-      std::cout << "print after crispr, (rd_ls): " << std::endl;
-      print_list_rec(rd_ls);
-      std::cout << "-----" << std::endl;
-      std::cout << "print after crispr, (n_ls): " << std::endl;
-      print_list_rec(n_ls);
-      std::cout << std::endl << "-------------" << std::endl << std::endl;
-
+      crispr(min_max, rd_ls);
       n_ls = cons_list(min_max, n_ls);
-
-      std::cout << "print after cons_list, (rd_ls): " << std::endl;
-      print_list_rec(rd_ls);
-      std::cout << "-----" << std::endl;
-      std::cout << "print after cons_list, (n_ls): " << std::endl;
-      print_list_rec(n_ls);
-      std::cout << std::endl << "-------------" << "\n\n\n\n\n";
     }
-    std::cout << "quit for loop" << std::endl;
-    print_list_rec(n_ls);
     return n_ls;
   }
   else{
     for (int i = 0; i < ls_len; i++){
       min_max = extreme_val(rd_ls);
-      crispr_cut_1(min_max, rd_ls);
+      crispr(min_max, rd_ls);
       n_ls = cons_list(min_max, n_ls);
     }
     return n_ls;
@@ -231,7 +194,7 @@ int main(){
 
   ls_ptr = order_ls(ls_ptr, true);
 
-  //print_list_rec(ls_ptr);
+  print_list_rec(ls_ptr);
 
   deallocate_list_rec(ls_ptr);
 }
