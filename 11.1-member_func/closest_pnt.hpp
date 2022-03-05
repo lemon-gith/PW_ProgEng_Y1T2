@@ -23,14 +23,13 @@ void closest_points(const std::vector<Point>& vp, int& idxp1, int& idxp2){
   idxp1 = 0;
   idxp2 = 1;
 
-  for (int i = 0; i < vp.size() - 1; i++){
-    for (int j = i + 1; j < (vp.size() - (i + 1)); j++) {
+  for (int i = 0; i < vp.size(); i++){
+    for (int j = i + 1; j < vp.size(); j++) {
       if ((i == 0) && (j == 1)){
         continue;
       }
+
       double cur_dist = vp[i].distance(vp[j]);
-      std::cout << "i = " << i << ", j = " << j << std::endl;
-      std::cout << "cur_dist = " << cur_dist << ", min_dist = " << min_dist << std::endl;
 
       if (cur_dist < min_dist) {
         min_dist = cur_dist;
@@ -45,7 +44,7 @@ void closest_points(const std::vector<Point>& vp, int& idxp1, int& idxp2){
 }
 
 
-int main(){
+/*int main(){
 
   std::ifstream infile;
   infile.open("11.1-member_func/points.txt");
@@ -79,4 +78,4 @@ int main(){
     tmp = points[idxp2];
     std::cout << tmp.to_s() << std::endl;
   }
-}
+}*/
