@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include <iostream>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -15,13 +13,13 @@ private:
 
 public:
 
-  Point() : x(0), y(0) {}
+  Point(double ix, double iy) : x(ix), y(iy) {}
 
   std::string to_s(){
   return "(" + std::to_string(x) + ", " + std::to_string(y) + ")";
   }
 
-  double displacement(Point p){
+  double displacement(Point p) const {
   return std::sqrt(std::pow((x - p.x), 2) + std::pow((y - p.y), 2));
   }
 // note that we can access
@@ -31,12 +29,17 @@ public:
 };
 
 double sum_distances_points(const std::vector<Point>& pv){
-  // TODO: complete this function
+  double dist_sum{};
+  for (int i = 0; i < pv.size() - 1; i++){
+    int j = i + 1;
+    dist_sum += pv[i].displacement(pv[j]);
+  }
+  return dist_sum;
 }
 
 int main(){
   std::ifstream infile;
-  infile.open("points.txt");
+  infile.open("11.3-access_modifiers/points.txt");
 
   if(!infile.is_open()){
     std::cout << "error opening file" << std::endl;
@@ -48,13 +51,8 @@ int main(){
   double inx, iny;
 
   while(infile >> inx >> iny){
-    // TODO:
-    // instantiate an object of type Point within this loop
-    // passing inx and iny to its constructor
-    // then add it to vector points
-    // (since the instantiation happens within the loop
-    //  a different object, although with the same name,
-    //  will actually be instantiated at each iteration)
+    Point tmp(inx, iny);
+    points.push_back(tmp);
   }
 
   infile.close();
