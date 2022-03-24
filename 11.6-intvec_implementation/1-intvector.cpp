@@ -22,7 +22,7 @@ public:
   // like push_back in std::vector
   void push_back(int n){
     if(m_capacity <= m_size) {
-      m_capacity += 2 * log(m_capacity) + 1;
+      m_capacity *= 2 * (log(m_capacity) + 3);
     }
     p[m_size] = n;
     m_size++;
