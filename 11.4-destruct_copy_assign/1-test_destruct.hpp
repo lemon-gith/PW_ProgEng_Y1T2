@@ -35,4 +35,5 @@ int main(){
   f();
   std::cout << "just f()'d" << std::endl;
   delete sp;
+  //s(2) is automatically deleted by the main function, as it wasn't dynamically allocated
 }

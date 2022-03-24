@@ -19,43 +19,37 @@ public:
   }
 
   // like push_back in std::vector
-  // same algorithm as
-  // "Reallocating dynamically allocated contiguous memory"
-  // in section 11.5
   void push_back(int n){
-    // TODO: implement this function
+    if(m_capacity <= m_size) {
+      m_capacity += 2 * log(m_capacity) + 1;
+    }
+    p[m_size] = n;
+    m_size++;
   }
 
   // like size() in std::vector
   int size() const {
-    // TODO: implement this function
+    return m_size;
   }
 
   // like capacity() in std::vector
   int capacity() const {
-    // TODO: implement this function
+    return m_capacity;
   }
 
   // return the element at index i
-  // (consider how it is used in the main below)
   int at(int i) const {
-    // TODO: implement this function
+    return p[i];
   }
 
-  // destructor: we need to write our own destructor
-  // with a delete[] instruction that deallocates
-  // the dynamically allocated contiguous memory
-
-  // we would have a memory leak otherwise because
+  // destructor: we need to write our own destructor with a delete[] instruction that deallocates
+  // the dynamically allocated contiguous memory we would have a memory leak otherwise because
   // the default destructor wouldn't do this
-
   ~intvector(){
     delete[] p;
   }
 
   // copy constructor
-  // (see explanation in exercise below)
-
   intvector(const intvector& v){
     m_capacity = v.m_capacity;
     m_size = v.m_size;
@@ -69,8 +63,6 @@ public:
   }
 
   // assignment operator
-  // (see explanation in exercise below)
-
   intvector& operator=(const intvector& v){
 
     // first of all we check whether this is being called
@@ -109,8 +101,9 @@ int main(){
   intvector iv1;
 
   for(int i = 0; i < 9; i++){
+    std::cout << "pre-push: \n m_size = " << iv1.size() << "\n m_capacity = " << iv1.capacity() << std::endl;
     iv1.push_back(i);
-    // TODO: add printing instructions showing how the size and the capacity are updated
+    std::cout << "post-push: \n m_size = " << iv1.size() << "\n m_capacity = " << iv1.capacity() << std::endl;
   }
 
   std::cout << "printing iv1: " << std::endl;
@@ -151,6 +144,6 @@ int main(){
     std::cout << iv3.at(i) << std::endl;
   }
 
-  std::cout << std::endl;
+  std::cout << "end of code" << std::endl;
 
 }
