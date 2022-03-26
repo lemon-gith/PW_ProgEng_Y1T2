@@ -23,6 +23,12 @@ public:
   void push_back(int n){
     if(m_size + 1 >= m_capacity) {
       m_capacity += 2 * log(m_capacity + 1);
+      int* tmp = new int[m_capacity];
+      for (int i = 0; i < m_size + 1; i++){
+        tmp[i] = p[i];
+      }
+      delete []p;
+      p = tmp;
     }
     p[m_size] = n;
     m_size++;
